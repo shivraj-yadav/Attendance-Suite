@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_abs"
+    tools:context=".submitAttendance">
+
+    <!-- Main Card Layout -->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="#ffffff"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Title: Attendance Submission -->
+            <TextView
+                android:id="@+id/attendanceTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Attendance Submission"
+                android:textColor="#FDB600"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Date & Class Info -->
+
+            <!-- Attendance Status Text -->
+
+            <TextView
+                android:id="@+id/attendanceStatusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Select Your Attendance"
+                android:textColor="#FAA83A"
+                android:textSize="18sp" />
+
+            <!-- Attendance Radio Group -->
+            <RadioGroup
+                android:id="@+id/attendanceRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/presentRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:drawableLeft="@drawable/ic_check_circle"
+                    android:paddingLeft="10dp"
+                    android:text="Present"
+                    android:enabled="true"
+                    android:textColor="#FEDD87"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/absentRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_cancel"
+                    android:enabled="false"
+                    android:paddingLeft="10dp"
+                    android:text="Absent"
+                    android:textColor="#FEDD87"
+                    android:textSize="16sp" />
+            </RadioGroup>
+
+            <!-- Attendance Request Message -->
+            <TextView
+                android:id="@+id/requestMessageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Attendance requests will be reviewed by your teacher."
+                android:textColor="#FAA83A"
+                android:textSize="14sp" />
+
+            <!-- Submit Button -->
+            <EditText
+                android:id="@+id/attendancePinEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Attendance Pin"
+                android:inputType="number"
+                android:layout_marginBottom="20dp"
+                android:padding="10dp"
+                android:textColor="#000000"
+                android:backgroundTint="#FDB600"
+                android:textSize="18sp" />
+
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#FDB600"
+                android:drawableStart="@drawable/ic_send"
+                android:text="Submit Attendance"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

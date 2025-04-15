@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Attendance Suite</string>
+    <string-array name="class_array">
+        <item>FY</item>
+        <item>SY</item>
+        <item>TY</item>
+    </string-array>
+</resources>

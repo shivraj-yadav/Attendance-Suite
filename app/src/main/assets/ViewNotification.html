@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <style>
+        *:focus { outline: none; }
+        * { -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('bg_abs.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #FDB600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .notification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .notification-card {
+            background-color: #FEDD87;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .notification-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .notification-card h3 { color: #FDB600; margin-bottom: 10px; }
+        .notification-card p { margin: 5px 0; }
+        .notification-card .from { font-weight: bold; margin-bottom: 10px; }
+        .no-notifications {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>All Notifications</h1>
+    <div id="notificationGrid" class="notification-grid"></div> <!-- ✅ Added id="notificationGrid" -->
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDVRwpHrBJ1H7jOURzjSZRkhlwaWOvl3IE",
+        authDomain: "attendance-suite.firebaseapp.com",
+        databaseURL: "https://attendance-suite-default-rtdb.firebaseio.com",
+        projectId: "attendance-suite",
+        storageBucket: "attendance-suite.appspot.com",
+        messagingSenderId: "186945978828",
+        appId: "1:186945978828:web:e99a37cf8881d8f9495d69"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const notificationsRef = ref(db, 'notifications');
+
+    // Get notification grid element
+    const notificationGrid = document.getElementById('notificationGrid');
+
+    // Function to format timestamp
+    function formatTimestamp(timestamp) {
+        if (!timestamp) return "No timestamp available";
+        const date = new Date(parseInt(timestamp));
+        return date.toLocaleString(); // Convert to readable date and time
+    }
+
+    // Load Notifications
+    function loadNotifications() {
+        onValue(notificationsRef, (snapshot) => {
+            const notifications = snapshot.val();
+            notificationGrid.innerHTML = '';
+            if (notifications) {
+                for (const id in notifications) {
+                    const notification = notifications[id];
+                    notificationGrid.innerHTML += `
+                        <div class="notification-card">
+                            <h3>${notification.subject}</h3>
+                            <p class="from">From: ${notification.from}</p>
+                            <p>${notification.message}</p>
+                            <p class="timestamp">Time: ${formatTimestamp(notification.timestamp)}</p>
+                        </div>
+                    `;
+                }
+            } else {
+                notificationGrid.innerHTML = '<p class="no-notifications">No notifications available.</p>';
+            }
+        });
+    }
+
+    loadNotifications();
+</script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Remove tap highlight */
+        *:focus {
+            outline: none;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none; /* Optional: Disable context menu on long press */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('bg_abs.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+
+        .container {
+    max-width: 900px;
+    margin: 50px 10px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+        h1 {
+            color: #FDB600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: -webkit-fill-available;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button {
+            background-color: #FDB600;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #FAA83A;
+        }
+
+        .notification-card {
+            background-color: #FEDD87;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-card h3 {
+            color: #FDB600;
+        }
+
+        .notification-card p {
+            margin: 5px 0;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+<div style="background:url('https://i.ibb.co/jZZvdxWN/dark-card.png');text-shadow: 0px 0px 7px white;color: white;background-repeat: no-repeat;background-size: cover;margin: 10px;padding: 10px;border: 2px solid rgba(128, 128, 128, 0.492);border-radius: 25px;">
+    <h3>Notification Service</h3>
+    <small style="color: white;">Usage - To create notices</small>
+    <p>Create notification for all the available students to keep them informed of upcoming, holidays, exams and events.  </p>
+</div>
+<div class="container">
+    <h1>Notification Management</h1>
+    <div>
+        <form id="notificationForm">
+            <label for="from">From:</label>
+            <input type="text" id="from" placeholder="Enter your name" required />
+
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" placeholder="Enter subject" required />
+
+            <label for="message">Message:</label>
+            <textarea id="message" rows="5" placeholder="Enter your message" required></textarea>
+
+            <button type="button" id="createNotificationBtn">Create Notification</button>
+            <button type="button" id="updateNotificationBtn" class="hidden">Update Notification</button>
+        </form>
+    </div>
+
+    <h2>All Notifications</h2>
+    <div id="notificationList"></div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getDatabase, ref, push, update, remove, onValue } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDVRwpHrBJ1H7jOURzjSZRkhlwaWOvl3IE",
+        authDomain: "attendance-suite.firebaseapp.com",
+        databaseURL: "https://attendance-suite-default-rtdb.firebaseio.com",
+        projectId: "attendance-suite",
+        storageBucket: "attendance-suite.appspot.com",
+        messagingSenderId: "186945978828",
+        appId: "1:186945978828:web:e99a37cf8881d8f9495d69"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const notificationsRef = ref(db, 'notifications');
+
+    // Elements
+    const notificationForm = document.getElementById('notificationForm');
+    const fromInput = document.getElementById('from');
+    const subjectInput = document.getElementById('subject');
+    const messageInput = document.getElementById('message');
+    const createNotificationBtn = document.getElementById('createNotificationBtn');
+    const updateNotificationBtn = document.getElementById('updateNotificationBtn');
+    const notificationList = document.getElementById('notificationList');
+
+    let editNotificationId = null;
+
+    // Load Notifications
+    function loadNotifications() {
+        notificationList.innerHTML = '';
+        onValue(notificationsRef, (snapshot) => {
+            const notifications = snapshot.val();
+            if (notifications) {
+                for (const id in notifications) {
+                    const notification = notifications[id];
+                    const timestamp = new Date(parseInt(notification.timestamp)).toLocaleString();
+                    notificationList.innerHTML += `
+                        <div class="notification-card" id="${id}">
+                            <h3>${notification.subject}</h3>
+                            <p><strong>From:</strong> ${notification.from}</p>
+                            <p>${notification.message}</p>
+                            <p><strong>Created at:</strong> ${timestamp}</p>
+                            <div class="notification-actions">
+                                <button onclick="editNotification('${id}', '${notification.from}', '${notification.subject}', '${notification.message}')">Edit</button>
+                                <button onclick="deleteNotification('${id}')">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                notificationList.innerHTML = '<p>No notifications found.</p>';
+            }
+        });
+    }
+
+    // Create Notification
+    createNotificationBtn.addEventListener('click', () => {
+        const from = fromInput.value;
+        const subject = subjectInput.value;
+        const message = messageInput.value;
+
+        if (from && subject && message) {
+            const newNotification = {
+                from,
+                subject,
+                message,
+                notification_id: Date.now().toString(),
+                timestamp: Date.now().toString() // Add timestamp
+            };
+
+            push(notificationsRef, newNotification).then(() => {
+                alert('Notification created successfully!');
+                notificationForm.reset();
+            }).catch((error) => {
+                alert('Error creating notification: ' + error.message);
+            });
+        } else {
+            alert('Please fill in all fields.');
+        }
+    });
+
+    // Edit Notification
+    window.editNotification = (id, from, subject, message) => {
+        fromInput.value = from;
+        subjectInput.value = subject;
+        messageInput.value = message;
+        editNotificationId = id;
+
+        createNotificationBtn.classList.add('hidden');
+        updateNotificationBtn.classList.remove('hidden');
+    };
+
+    // Update Notification
+    updateNotificationBtn.addEventListener('click', () => {
+        if (editNotificationId) {
+            const updatedNotification = {
+                from: fromInput.value,
+                subject: subjectInput.value,
+                message: messageInput.value
+            };
+
+            update(ref(db, `notifications/${editNotificationId}`), updatedNotification).then(() => {
+                alert('Notification updated successfully!');
+                notificationForm.reset();
+                createNotificationBtn.classList.remove('hidden');
+                updateNotificationBtn.classList.add('hidden');
+                editNotificationId = null;
+            }).catch((error) => {
+                alert('Error updating notification: ' + error.message);
+            });
+        }
+    });
+
+    // Delete Notification
+    window.deleteNotification = (id) => {
+        remove(ref(db, `notifications/${id}`)).then(() => {
+            alert('Notification deleted successfully!');
+        }).catch((error) => {
+            alert('Error deleting notification: ' + error.message);
+        });
+    };
+
+    // Load notifications on page load
+    loadNotifications();
+</script>
+</body>
+
+</html>

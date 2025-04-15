@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_abs">
+
+    <!-- Card View -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="#FFFFFF"
+        android:elevation="8dp"
+        android:radius="16dp"
+        app:cardCornerRadius="25dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_bold"
+                android:paddingBottom="8dp"
+                android:text="Login"
+                android:textColor="#FDB600"
+                android:textSize="24sp" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_light"
+                android:paddingBottom="20dp"
+                android:text="Welcome Back! Please login to continue."
+                android:textColor="#FAA83A"
+                android:textSize="14sp" />
+
+            <!-- Email Input -->
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/input_bg_style"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="Email"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
+
+            <!-- Password Input -->
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/input_bg_style"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#FDB600"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Login"
+                android:textColor="#FFFFFF" />
+
+            <!-- Forgot Password -->
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

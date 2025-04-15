@@ -1,0 +1,150 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_abs"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header Section -->
+        <TextView
+            android:id="@+id/header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Link Parent to Student"
+            android:textColor="#FDB600"
+            android:textSize="24sp"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:id="@+id/header_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_light"
+            android:text="Manage parent linking with your account below."
+            android:textColor="#FAA83A"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="16dp" />
+
+        <!-- Card Section -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Linked Parent Details -->
+                <TextView
+                    android:id="@+id/parent_detail_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Parent Details"
+                    android:textColor="#FDB600"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/parent_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Name: John Doe"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:paddingBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/parent_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Email: john.doe@gmail.com"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:paddingBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/parent_contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Contact: 9876543210"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:paddingBottom="12dp" />
+
+                <!-- Unlink Button -->
+                <Button
+                    android:id="@+id/btn_unlink_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#FAA83A"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Unlink Parent"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Linking Form -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/form_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Link Parent"
+                    android:textColor="#FDB600"
+                    android:textSize="18sp"
+                    android:paddingBottom="8dp" />
+
+                <!-- Parent ID Field -->
+                <EditText
+                    android:id="@+id/input_parent_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#FDB600"
+                    android:hint="Enter Parent ID"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="#333333"
+                    android:textColorHint="#888888"
+                    android:padding="12dp"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Submit Button -->
+                <Button
+                    android:id="@+id/btn_link_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#FDB600"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Link Parent"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

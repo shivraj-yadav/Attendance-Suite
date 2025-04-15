@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('bg_abs.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+    }
+    .heading {
+      color: #FDB600;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .card {
+      background-color: #FEDD87;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin: 1rem 0;
+    }
+    .card-header {
+      background-color: #FAA83A;
+      color: #fff;
+      font-weight: bold;
+    }
+    .chart-container {
+      margin: 2rem 0;
+    }
+    .table-container {
+      margin: 2rem 0;
+    }
+    @media (max-width: 768px) {
+      .chart-container, .table-container {
+        margin: 1rem 0;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="heading">Dynamic Report</h1>
+
+    <!-- Attendance Records Section -->
+    <section id="attendance-section">
+      <h2 class="text-center">Attendance Records</h2>
+      <div class="chart-container">
+        <canvas id="attendanceChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Notifications Section -->
+    <section id="notifications-section">
+      <h2 class="text-center">Notifications</h2>
+      <div id="notifications-container" class="row"></div>
+    </section>
+
+    <!-- Students Details Section -->
+    <section id="students-section">
+      <h2 class="text-center">Students Details</h2>
+      <div class="table-container">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Class</th>
+              <th>Department</th>
+            </tr>
+          </thead>
+          <tbody id="students-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDVRwpHrBJ1H7jOURzjSZRkhlwaWOvl3IE",
+      authDomain: "attendance-suite.firebaseapp.com",
+      databaseURL: "https://attendance-suite-default-rtdb.firebaseio.com",
+      projectId: "attendance-suite",
+      storageBucket: "attendance-suite.firebasestorage.app",
+      messagingSenderId: "186945978828",
+      appId: "1:186945978828:web:e99a37cf8881d8f9495d69"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database(app);
+
+    // Fetch Attendance Records
+    const fetchAttendance = async () => {
+      const attendanceRef = firebase.database().ref('attendance_records');
+      const studentsRef = firebase.database().ref('students');
+
+      const attendanceSnapshot = await attendanceRef.get();
+      const studentsSnapshot = await studentsRef.get();
+      const attendanceData = attendanceSnapshot.val();
+      const studentsData = studentsSnapshot.val();
+
+      // Prepare Data for Chart
+      const studentNames = [];
+      const attendanceCounts = [];
+
+      for (const studentId in attendanceData) {
+        const student = studentsData[studentId];
+        if (student) {
+          studentNames.push(student.name);
+          attendanceCounts.push(Object.keys(attendanceData[studentId]).length);
+        }
+      }
+
+      // Render Attendance Chart
+      const ctx = document.getElementById('attendanceChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: studentNames,
+          datasets: [{
+            label: 'Attendance Count',
+            data: attendanceCounts,
+            backgroundColor: '#FDB600'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true
+            }
+          }
+        }
+      });
+    };
+
+    // Fetch Notifications
+    const fetchNotifications = async () => {
+      const notificationsRef = firebase.database().ref('notifications');
+      const snapshot = await notificationsRef.get();
+      const notifications = snapshot.val();
+
+      const container = document.getElementById('notifications-container');
+      container.innerHTML = '';
+      for (let key in notifications) {
+        const notification = notifications[key];
+        container.innerHTML += `
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">${notification.subject}</div>
+              <div class="card-body">
+                <p><strong>From:</strong> ${notification.from}</p>
+                <p>${notification.message}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    };
+
+    // Fetch Students Details
+    const fetchStudents = async () => {
+      const studentsRef = firebase.database().ref('students');
+      const snapshot = await studentsRef.get();
+      const students = snapshot.val();
+
+      const tableBody = document.getElementById('students-table-body');
+      tableBody.innerHTML = '';
+      for (let id in students) {
+        const student = students[id];
+        tableBody.innerHTML += `
+          <tr>
+            <td>${student.studentId}</td>
+            <td>${student.name}</td>
+            <td>${student.email}</td>
+            <td>${student.studentClass}</td>
+            <td>${student.department}</td>
+          </tr>
+        `;
+      }
+    };
+
+    // Fetch All Data on Page Load
+    window.onload = () => {
+      fetchAttendance();
+      fetchNotifications();
+      fetchStudents();
+    };
+  </script>
+</body>
+</html>

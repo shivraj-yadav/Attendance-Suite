@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_abs"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Parent Information Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parent Information"
+            android:textSize="24sp"
+            android:textColor="#FDB600"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginBottom="16dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FEDD87"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvParentName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name: Loading..."
+                    android:textSize="18sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvParentEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email: Loading..."
+                    android:textSize="16sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvParentContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contact: Loading..."
+                    android:textSize="16sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Student Information Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Student Information"
+            android:textSize="24sp"
+            android:textColor="#FDB600"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginBottom="16dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FEDD87"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvStudentName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name: Loading..."
+                    android:textSize="18sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvStudentEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email: Loading..."
+                    android:textSize="16sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvStudentContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contact: Loading..."
+                    android:textSize="16sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvStudentRollNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Roll No: Loading..."
+                    android:textSize="16sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvStudentDepartment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Department: Loading..."
+                    android:textSize="16sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvStudentClass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Class: Loading..."
+                    android:textSize="16sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Attendance Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attendance Report"
+            android:textSize="24sp"
+            android:textColor="#FDB600"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginBottom="16dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FEDD87"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvAttendance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Attendance: Loading..."
+                    android:textSize="16sp"
+                    android:textColor="#333"
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginBottom="8dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Notifications Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notifications"
+            android:textSize="24sp"
+            android:textColor="#FDB600"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginBottom="16dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FEDD87"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:id="@+id/llNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <!-- Notifications will be dynamically added here -->
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Exam Schedules Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exam Schedules"
+            android:textSize="24sp"
+            android:textColor="#FDB600"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginBottom="16dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FEDD87"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:id="@+id/llExamSchedules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <!-- Exam schedules will be dynamically added here -->
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Logout Button -->
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:backgroundTint="#FDB600"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_abs"
+    tools:context=".GeneratePin">
+
+    <!-- Toolbar -->
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="#FDB600"
+        android:text="Generate Attendance Code"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_bold"
+        android:textSize="20sp"
+        android:gravity="center" />
+
+    <!-- Main Card Layout -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_generate_pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_below="@id/toolbar_title"
+        android:padding="16dp"
+        android:backgroundTint="#FEDD87"
+        app:cardCornerRadius="15dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- Heading -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Generate Attendance Code"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="#FAA83A"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Input Field -->
+            <EditText
+                android:id="@+id/et_pin_length"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Pin Length (e.g., 4)"
+                android:fontFamily="@font/poppins_regular"
+                android:background="@drawable/input_bg_style"
+                android:padding="12dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:inputType="number"
+                android:textColor="#000"
+                android:textColorHint="#808080"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Generate Pin Button -->
+
+            <Button
+                android:id="@+id/btn_generate_pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Generate Pin"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="12dp"
+                android:fontFamily="@font/poppins_bold"
+                android:backgroundTint="#FAA83A"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Generated Pin Display -->
+
+    <TextView
+        android:id="@+id/tv_generated_pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView15"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_black"
+        android:gravity="center"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card_generate_pin"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="0dp"
+        android:text="Generated pin will appear here 😺"
+        android:textAlignment="center"
+        android:textColor="@color/text_black" />
+</RelativeLayout>

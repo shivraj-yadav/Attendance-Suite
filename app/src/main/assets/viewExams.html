@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Schedule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('bg_abs.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px 10px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #FDB600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .exam-card {
+            background-color: #FEDD87;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .exam-card h3 {
+            color: #FDB600;
+        }
+
+        .exam-card p {
+            margin: 5px 0;
+        }
+
+        .exam-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Exam Schedule</h1>
+        <div id="examList"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVRwpHrBJ1H7jOURzjSZRkhlwaWOvl3IE",
+            authDomain: "attendance-suite.firebaseapp.com",
+            databaseURL: "https://attendance-suite-default-rtdb.firebaseio.com",
+            projectId: "attendance-suite",
+            storageBucket: "attendance-suite.appspot.com",
+            messagingSenderId: "186945978828",
+            appId: "1:186945978828:web:e99a37cf8881d8f9495d69"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const examsRef = ref(db, 'exams');
+
+        // Element
+        const examList = document.getElementById('examList');
+
+        // Load Exam Schedules
+        function loadExams() {
+            examList.innerHTML = '';
+            onValue(examsRef, (snapshot) => {
+                const exams = snapshot.val();
+                if (exams) {
+                    for (const id in exams) {
+                        const exam = exams[id];
+                        examList.innerHTML += `
+                            <div class="exam-card" id="${id}">
+                                <h3>${exam.courseTitle} (${exam.courseCode})</h3>
+                                <p><strong>Exam Date:</strong> ${exam.examDate}</p>
+                                <p><strong>Time:</strong> ${exam.startTime} - ${exam.endTime}</p>
+                                <p><strong>Duration:</strong> ${exam.duration} minutes</p>
+                                <p><strong>Exam Type:</strong> ${exam.examType}</p>
+                                <p><strong>Instructor:</strong> ${exam.instructor}</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    examList.innerHTML = '<p>No exams scheduled.</p>';
+                }
+            });
+        }
+
+        // Load exams on page load
+        loadExams();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!-- Teacher Login Screen XML Layout -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_abs">
+
+    <!-- Login Card -->
+    <LinearLayout
+        android:id="@+id/loginCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:elevation="4dp">
+
+        <!-- Heading -->
+        <TextView
+            android:id="@+id/loginHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Teacher Login"
+            android:textColor="#FDB600"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="24sp" />
+
+        <!-- Email Input -->
+        <EditText
+            android:id="@+id/loginEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:textColor="@color/text_black"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/text_black"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FDB600" />
+
+        <!-- Password Input -->
+        <EditText
+            android:id="@+id/loginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:textColor="@color/text_black"
+            android:textColorHint="@color/text_black"
+            android:inputType="textPassword"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FDB600" />
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:backgroundTint="#FDB600"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="24dp" />
+
+        <!-- Register Link -->
+        <TextView
+            android:id="@+id/registerBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? Register here"
+            android:textColor="#FAA83A"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</RelativeLayout>

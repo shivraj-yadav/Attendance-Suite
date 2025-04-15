@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/bg_abs"> <!-- Use your background image here -->
+
+    <!-- Heading -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Absent Students"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- RecyclerView for Absent Students List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/absentStudentsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Customize SMS Message -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Customize SMS Message:"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/smsMessageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/input_bg_style"
+        android:fontFamily="@font/poppins_regular"
+        android:hint="Enter your message here..."
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:padding="8dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/text_black" />
+
+    <!-- Send SMS Button -->
+    <Button
+        android:id="@+id/sendSmsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send SMS to Absent Students"
+        android:textColor="@color/white"
+        android:backgroundTint="#FF9800"
+    android:fontFamily="@font/poppins_bold"
+    android:textAllCaps="false"
+    android:padding="12dp"/>
+</LinearLayout>

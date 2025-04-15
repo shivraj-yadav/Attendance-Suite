@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('bg_abs.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #FDB600;
+            font-weight: 700;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #FDB600;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #e5a800;
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: #FEDD87;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1 1 calc(33% - 20px);
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        canvas {
+            margin: 30px auto;
+            display: block;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+<!-- Login View -->
+<div id="loginView" class="container">
+    <h1>Login</h1>
+    <div class="form-group">
+        <label for="loginEmail">Email:</label>
+        <input type="email" id="loginEmail">
+    </div>
+    <div class="form-group">
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword">
+    </div>
+    <button class="btn" onclick="login()">Login</button>
+    <p style="text-align: center; margin-top: 10px;">Don't have an account? <a href="#" onclick="showView('registerView')">Register</a></p>
+</div>
+
+<!-- Register View -->
+<div id="registerView" class="container hidden">
+    <h1>Register</h1>
+    <div class="form-group">
+        <label for="registerEmail">Email:</label>
+        <input type="email" id="registerEmail">
+    </div>
+    <div class="form-group">
+        <label for="registerPassword">Password:</label>
+        <input type="password" id="registerPassword">
+    </div>
+    <div class="form-group">
+        <label for="registerParentName">Parent Name:</label>
+        <input type="text" id="registerParentName">
+    </div>
+    <div class="form-group">
+        <label for="registerStudentId">Student ID:</label>
+        <input type="text" id="registerStudentId">
+    </div>
+    <button class="btn" onclick="register()">Register</button>
+    <p style="text-align: center; margin-top: 10px;">Already have an account? <a href="#" onclick="showView('loginView')">Login</a></p>
+</div>
+
+<!-- Dashboard View -->
+<div id="dashboardView" class="container hidden">
+    <h1>📊 Parent Dashboard</h1>
+    <div class="info">
+        <span id="greeting"></span>
+        <div class="info-card">
+            <strong>Parent Name:</strong>
+            <span id="parentName">Loading...</span>
+        </div>
+        <div class="info-card">
+            <strong>Student ID:</strong>
+            <span id="studentId">Loading...</span>
+        </div>
+        <div class="info-card">
+            <strong>Total Attendance:</strong>
+            <span id="attendanceCount">Loading...</span>
+        </div>
+    </div>
+    <canvas id="attendanceChart" width="400" height="400"></canvas>
+
+    <!-- Notifications Section -->
+    <section>
+        <h2>Notifications</h2>
+        <div id="notifications"></div>
+    </section>
+
+    <!-- Exams Section -->
+    <section>
+        <h2>Upcoming Exams</h2>
+        <div id="exams"></div>
+    </section>
+
+    <button class="btn" onclick="logout()">Logout</button>
+</div>
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDVRwpHrBJ1H7jOURzjSZRkhlwaWOvl3IE",
+        authDomain: "attendance-suite.firebaseapp.com",
+        databaseURL: "https://attendance-suite-default-rtdb.firebaseio.com",
+        projectId: "attendance-suite",
+        storageBucket: "attendance-suite.appspot.com",
+        messagingSenderId: "186945978828",
+        appId: "1:186945978828:web:e99a37cf8881d8f9495d69"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Check if the user is already logged in
+    function checkLoginStatus() {
+        const parentName = localStorage.getItem('parentName');
+        const studentId = localStorage.getItem('studentId');
+        if (parentName && studentId) {
+            loadDashboard();
+        } else {
+            showView('loginView');
+        }
+    }
+
+    // Show/hide views
+    function showView(viewId) {
+        document.querySelectorAll('.container').forEach(view => view.classList.add('hidden'));
+        document.getElementById(viewId).classList.remove('hidden');
+    }
+
+    // Registration
+    async function register() {
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        const parentName = document.getElementById('registerParentName').value;
+        const studentId = document.getElementById('registerStudentId').value;
+
+        const userData = {
+            email: email,
+            password: password,
+            parentName: parentName,
+            studentId: studentId
+        };
+
+        try {
+            // Save user data in the database
+            await database.ref(`users/${email.replace('.', ',')}`).set(userData);
+            alert('Registration successful!');
+            showView('loginView');
+        } catch (error) {
+            console.error("Registration error:", error.message);
+            alert(error.message);
+        }
+    }
+
+    // Login
+    async function login() {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        try {
+            // Fetch user data from the database
+            const userSnapshot = await database.ref(`users/${email.replace('.', ',')}`).get();
+            if (userSnapshot.exists()) {
+                const userData = userSnapshot.val();
+                if (userData.password === password) {
+                    // Store login info in localStorage
+                    localStorage.setItem('email', email);
+                    localStorage.setItem('parentName', userData.parentName);
+                    localStorage.setItem('studentId', userData.studentId);
+                    loadDashboard();
+                } else {
+                    alert('Incorrect password!');
+                }
+            } else {
+                alert('User not found!');
+            }
+        } catch (error) {
+            console.error("Login error:", error.message);
+            alert(error.message);
+        }
+    }
+
+    // Logout
+    function logout() {
+        localStorage.clear();
+        showView('loginView');
+    }
+
+    // Load Dashboard
+    async function loadDashboard() {
+        const parentName = localStorage.getItem('parentName');
+        const studentId = localStorage.getItem('studentId');
+
+        document.getElementById('parentName').textContent = parentName;
+        document.getElementById('studentId').textContent = studentId;
+
+        try {
+            const attendanceSnapshot = await database.ref(`attendance_records/${studentId}`).get();
+
+            let attendedClasses = 0;
+            const totalClasses = 31;
+
+            if (attendanceSnapshot.exists()) {
+                attendedClasses = Object.keys(attendanceSnapshot.val()).length;
+            }
+
+            const missedClasses = totalClasses - attendedClasses;
+            document.getElementById('attendanceCount').textContent = `${attendedClasses} / ${totalClasses}`;
+
+            // Destroy any existing chart before creating a new one
+            if (window.attendanceChart) {
+                window.attendanceChart.destroy();
+            }
+
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            window.attendanceChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Attended', 'Missed'],
+                    datasets: [{
+                        data: [attendedClasses, missedClasses],
+                        backgroundColor: ['#00FF00', '#FF0000']
+                    }]
+                }
+            });
+
+            showView('dashboardView');
+        } catch (error) {
+            console.error("Error loading dashboard:", error.message);
+        }
+    }
+
+    // Fetch Student Data from Firebase
+    function fetchStudentData(studentId) {
+        database.ref(`students/${studentId}`).once('value', (snapshot) => {
+            const student = snapshot.val();
+            if (student) {
+                const greetingElement = document.getElementById("greeting");
+                greetingElement.innerHTML = `Hello, ${student.name}! Welcome to your dashboard.`;
+
+                // Fetch Attendance Records
+                fetchAttendance(studentId);
+
+                // Fetch Notifications
+                fetchNotifications();
+
+                // Fetch Exams
+                fetchExams();
+            } else {
+                alert('No student data found for this ID.');
+            }
+        });
+    }
+
+    // Fetch Attendance Records
+    function fetchAttendance(studentId) {
+        database.ref(`attendance_records/${studentId}`).once('value', (snapshot) => {
+            const records = snapshot.val();
+            if (!records) {
+                alert('No attendance records found for this ID.');
+                return;
+            }
+
+            const totalDays = Object.keys(records).length;
+            const presentDays = Object.values(records).filter((day) => day === true).length;
+            const absentDays = totalDays - presentDays;
+
+            // Destroy any existing chart before creating a new one
+            if (window.attendanceChart) {
+                window.attendanceChart.destroy();
+            }
+
+            // Render Attendance Chart
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            window.attendanceChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Present', 'Absent'],
+                    datasets: [{
+                        data: [presentDays, absentDays],
+                        backgroundColor: ['#FDB600', '#FAA83A']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        });
+    }
+
+    // Fetch Notifications
+    function fetchNotifications() {
+        database.ref(`notifications`).once('value', (snapshot) => {
+            const notifications = snapshot.val();
+            const notificationsContainer = document.getElementById('notifications');
+            notificationsContainer.innerHTML = '';
+            if (notifications) {
+                Object.values(notifications).forEach((notification) => {
+                    const notifElement = document.createElement('div');
+                    notifElement.innerHTML = `
+                        <h3>${notification.subject}</h3>
+                        <p>${notification.message}</p>
+                        <small>From: ${notification.from}</small>
+                    `;
+                    notificationsContainer.appendChild(notifElement);
+                });
+            } else {
+                notificationsContainer.innerHTML = '<p>No notifications available.</p>';
+            }
+        });
+    }
+
+    // Fetch Exams
+    function fetchExams() {
+        database.ref('exams').once('value', (snapshot) => {
+            const exams = snapshot.val();
+            const examsContainer = document.getElementById('exams');
+            examsContainer.innerHTML = '';
+            if (exams) {
+                Object.values(exams).forEach((exam) => {
+                    const examElement = document.createElement('div');
+                    examElement.innerHTML = `
+                        <h3>${exam.courseTitle} (${exam.courseCode})</h3>
+                        <p>Instructor: ${exam.instructor}</p>
+                        <p>Type: ${exam.examType}</p>
+                        <p>Date: ${exam.examDate} ${exam.startTime} - ${exam.endTime}</p>
+                    `;
+                    examsContainer.appendChild(examElement);
+                });
+            } else {
+                examsContainer.innerHTML = '<p>No upcoming exams.</p>';
+            }
+        });
+    }
+
+    // Check login status on page load
+    checkLoginStatus();
+</script>
+</body>
+</html>

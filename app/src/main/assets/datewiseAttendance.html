@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100vw;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        header  {
+            background-color: #FAA83A;
+            color: black;
+            margin-bottom: 10px;
+            padding: 50px 0px;
+            border-bottom: 2px solid black;
+        }
+
+        header  {
+            margin-bottom: 30px;
+        }
+
+        .date-section {
+            margin-bottom: 20px;
+        }
+
+        .date-toggle {
+            background-color: #FDB600;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+
+        .date-toggle:hover {
+            background-color: #FAA83A;
+        }
+
+        .date-content {
+            margin-top: 10px;
+        }
+
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            color: #FDB600;
+        }
+
+        .card-header p {
+            font-size: 1rem;
+            color: #FAA83A;
+        }
+
+        .card-body p {
+            font-size: 1rem;
+            color: #333;
+        }
+        #attendanceContainer{
+            padding: 15px;
+            background-color: #fff0dc;
+            margin: 10px;
+            border-radius: 15px;
+            border: 3px solid rgba(128, 128, 128, 0.407);
+
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h3>Student Attendance Report</h1>
+            <h4>Date-Wise Attendance</h2>
+    </header>
+    <!-- Attendance Container -->
+    <div id="attendanceContainer"></div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getDatabase, ref, onValue, get } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDVRwpHrBJ1H7jOURzjSZRkhlwaWOvl3IE",
+        authDomain: "attendance-suite.firebaseapp.com",
+        databaseURL: "https://attendance-suite-default-rtdb.firebaseio.com",
+        projectId: "attendance-suite",
+        storageBucket: "attendance-suite.appspot.com",
+        messagingSenderId: "186945978828",
+        appId: "1:186945978828:web:e99a37cf8881d8f9495d69"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Fetch attendance data
+    const attendanceRef = ref(db, "attendance_records");
+
+    // Create an attendance card
+    function createAttendanceCard(student) {
+        return `
+            <div class="card">
+                <div class="card-header">
+                    <h3>${student.name || "Unknown"} - ${student.rollNo || "N/A"}</h3>
+                    <p>${student.department || "N/A"}</p>
+                </div>
+                <div class="card-body">
+                    <p>Address: ${student.address || "N/A"}</p>
+                    <p>Contact: ${student.contact || "N/A"}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    // Create a date section
+    function createDateSection(date, content) {
+        return `
+            <div class="date-section">
+                <button class="date-toggle" onclick="toggleSection('${date}')">
+                    ${date}
+                </button>
+                <div class="date-content" id="section-${date}" style="display: none;">
+                    ${content}
+                </div>
+            </div>
+        `;
+    }
+
+    // Toggle visibility of date sections
+    function toggleSection(date) {
+        const section = document.getElementById(`section-${date}`);
+        section.style.display = section.style.display === "none" ? "block" : "none";
+    }
+    window.toggleSection = toggleSection; // Make globally accessible
+
+    // Handle attendance data
+    onValue(attendanceRef, async (snapshot) => {
+        const attendanceContainer = document.getElementById("attendanceContainer");
+        attendanceContainer.innerHTML = "";
+
+        const groupedByDate = {};
+        const attendanceData = snapshot.val();
+
+        if (attendanceData) {
+            for (const studentId in attendanceData) {
+                const records = attendanceData[studentId];
+                for (const date in records) {
+                    if (!groupedByDate[date]) groupedByDate[date] = [];
+
+                    const studentSnapshot = await get(ref(db, `students/${studentId}`));
+                    const student = studentSnapshot.val();
+                    groupedByDate[date].push(createAttendanceCard(student || {}));
+                }
+            }
+
+            for (const date in groupedByDate) {
+                const dateContent = groupedByDate[date].join("");
+                attendanceContainer.innerHTML += createDateSection(date, dateContent);
+            }
+        } else {
+            attendanceContainer.innerHTML = "<p>No attendance records found.</p>";
+        }
+    });
+</script>
+</body>
+</html>

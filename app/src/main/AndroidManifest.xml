@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/app_logo_img"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/app_logo_img"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AttendanceSuite"
+        tools:targetApi="31">
+        <activity
+            android:name=".teacher_absent_students"
+            android:exported="false" />
+        <activity
+            android:name=".aboutUs"
+            android:exported="false" />
+        <activity
+            android:name=".contactUs"
+            android:exported="false" />
+        <activity
+            android:name=".teacherLogin"
+            android:exported="false" />
+        <activity
+            android:name=".viewExamSchedules"
+            android:exported="false" />
+        <activity
+            android:name=".TeacherRegistration"
+            android:exported="false" />
+        <activity
+            android:name=".viewAlerts"
+            android:exported="false" />
+        <activity
+            android:name=".teacherReport"
+            android:exported="false" />
+        <activity
+            android:name=".datewiseAttendance"
+            android:exported="true" />
+        <activity
+            android:name=".scheduleExam"
+            android:exported="true" />
+        <activity
+            android:name=".manageNotification"
+            android:exported="true" />
+        <activity
+            android:name=".StudentDetailsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".studentList"
+            android:exported="true" />
+        <activity
+            android:name=".GeneratePin"
+            android:exported="true" />
+        <activity
+            android:name=".teacherDashboard"
+            android:exported="true" />
+        <activity
+            android:name=".parentLogin"
+            android:exported="true" />
+        <activity
+            android:name=".parentRegistration"
+            android:exported="true" />
+        <activity
+            android:name=".studentParent"
+            android:exported="true" />
+        <activity
+            android:name=".parentDashboard"
+            android:exported="true" />
+        <activity
+            android:name=".attendanceReport"
+            android:exported="true" />
+        <activity
+            android:name=".studentLogin"
+            android:exported="true" />
+        <activity
+            android:name=".submitAttendance"
+            android:exported="true" />
+        <activity
+            android:name=".StudentDashboard"
+            android:exported="true" />
+        <activity
+            android:name=".ParentOnboard"
+            android:exported="true" />
+        <activity
+            android:name=".TeacherOnboard"
+            android:exported="true" />
+        <activity
+            android:name=".StudentOnboard"
+            android:exported="true" />
+        <activity
+            android:name=".Landing"
+            android:exported="true" />
+        <activity
+            android:name=".QuizCategoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AndroidQuizActivity"
+            android:exported="true" />
+        <activity
+            android:name=".WebDevQuizActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ChatBoatActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/SplashScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
